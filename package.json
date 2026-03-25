@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0"
+  },
+  "lint-staged": {
+    "server/**/*.{js,ts}": [
+      "npm --prefix server run lint:fix"
+    ],
+    "server/**/*.{js,ts,json,md,css}": [
+      "npm --prefix server run format:fix"
+    ]
+  }
+}
