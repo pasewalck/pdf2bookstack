@@ -1,0 +1,27 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET}
+      - CONVERT_API_KEY=${CONVERT_API_KEY}
+      - BOOKSTACK_BASE_URL=${BOOKSTACK_BASE_URL}
+      - BOOKSTACK_TOKEN_ID=${BOOKSTACK_TOKEN_ID}
+      - BOOKSTACK_TOKEN_SECRET=${BOOKSTACK_TOKEN_SECRET}
+    restart: unless-stopped
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - VITE_BACKEND_API_URL=${BACKEND_API_URL:-http://localhost:3001}
+        - VITE_BOOKSTACK_URL=${BOOKSTACK_BASE_URL:-http://127.0.0.1:6875}
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    depends_on:
+      - server
