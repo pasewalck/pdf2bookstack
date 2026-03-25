@@ -38,6 +38,9 @@ function App() {
           <a href="https://datalab.to" target="_blank" rel="noopener noreferrer" className="hover:underline">datalab.to</a>
           {' for PDF Data Extraction'}
           {' | '}
+          Icons from <a href="https://www.w3.org/" target="_blank" rel="noopener noreferrer" className="hover:underline">W3C</a>
+          {' & '}<a href="https://www.svgrepo.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">SVG Repo</a>
+          {' | '}
           <a href="https://github.com/pasewalck/pdf2bookstack" className="hover:underline">Source Code</a>
         </p>
       </footer>
