@@ -2,8 +2,8 @@
     "compilerOptions": {
         "module": "Node16",
         "target": "es2022",
+        "rootDir": "./src",
         "outDir": "./dist",
-        "rootDir": "./",
         "sourceMap": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
@@ -12,5 +12,5 @@
         "resolveJsonModule": true,
         "moduleResolution": "Node16"
     },
-    "include": ["src/**/*", "scripts/**/*"]
+    "include": ["src/**/*"]
 }
