@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import env from "../helpers/env";
 
 const JWT_SECRET = env.JWT_SECRET;
-console.log(JWT_SECRET);
 if (!JWT_SECRET) throw new Error("JWT_SECRET must be defined!");
 
 export interface AuthRequest extends Request {
