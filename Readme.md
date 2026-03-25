@@ -2,6 +2,8 @@
 
 This project implements a PDF-Importer for [Bookstack](https://www.bookstackapp.com/) using an API provided by [Datalab](https://www.datalab.to) and the [Bookstack API](https://bookstack.bassopaolo.com/api/docs) with authentication handled by JWTs.
 
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/e81c1ff2-7fbd-410b-a750-c2a4bd0f959a" />
+
 ## Architecture Overview
 
 The application works by a JWT being generated in a bookstack theme with a payload that inludes data about the book that an import is granted for. The user is then directed to this application's frontend. The token is verfified via the backend and the user is prompted to upload a PDF file. PDF file is uploaded to the backend where it is then converted to html or markdown via [Datalab](https://www.datalab.to)'s API. The results are then converted to a bookstack page and uploaded via the [Bookstack API](https://bookstack.bassopaolo.com/api/docs).
