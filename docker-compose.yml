@@ -3,8 +3,6 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    ports:
-      - "3001:3001"
     environment:
       - PORT=3001
       - JWT_SECRET=${JWT_SECRET}
@@ -20,8 +18,6 @@ services:
       args:
         - VITE_BACKEND_API_URL=${BACKEND_API_URL:-http://localhost:3001}
         - VITE_BOOKSTACK_URL=${BOOKSTACK_BASE_URL:-http://127.0.0.1:6875}
-    ports:
-      - "8080:80"
     restart: unless-stopped
     depends_on:
       - server
