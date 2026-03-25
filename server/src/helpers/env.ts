@@ -23,4 +23,5 @@ export default {
     BOOKSTACK_BASE_URL: process.env.BOOKSTACK_BASE_URL,
     BOOKSTACK_TOKEN_ID: process.env.BOOKSTACK_TOKEN_ID,
     BOOKSTACK_TOKEN_SECRET: process.env.BOOKSTACK_TOKEN_SECRET,
+    ALLOWED_ORIGIN: process.env.ALLOWED_ORIGIN || "*",
 };
