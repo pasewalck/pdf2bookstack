@@ -14,8 +14,8 @@ function App() {
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-3">Import PDF as Page</h2>
           <p className="text-gray-600 max-w-lg mx-auto">
-            Upload a PDF document. We'll automatically extract the text, formatting, and tables,
-            converting it into Markdown to create a new page in your BookStack book.
+            Upload a PDF document. We'll automatically extract the text, formatting, images, and tables,
+            converting it into Markdown or HTML to create a new page in your BookStack book.
           </p>
         </div>
 
