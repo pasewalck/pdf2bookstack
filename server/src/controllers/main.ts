@@ -8,7 +8,7 @@ import { readBook } from "../services/bookstackApi";
 
 export const tokenInfo = async (req: AuthRequest, res: Response) => {
     if (req.bookId)
-        res.json({
+        res.status(200).json({
             success: true,
             bookId: req.bookId,
             exp: req.exp,
@@ -18,7 +18,7 @@ export const tokenInfo = async (req: AuthRequest, res: Response) => {
 };
 
 export const health = async (req: AuthRequest, res: Response) => {
-    res.json({
+    res.status(200).json({
         success: true,
     });
 };
@@ -49,7 +49,7 @@ export const doUpload = async (req: AuthRequest, res: Response) => {
         console.log(`Conversion complete. Creating page in Bookstack (Book ID: ${bookId})...`);
 
         const page = await importBook(bookId, title, jsonResult, useMarkdown);
-        res.json({ success: true, pageUrl: page.url, pageId: page.id });
+        res.status(200).json({ success: true, pageUrl: page.url, pageId: page.id });
     } catch (error: any) {
         const message = (() => {
             if (axios.isAxiosError(error)) {

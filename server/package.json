@@ -7,7 +7,8 @@
         "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
         "build": "tsc",
         "start": "node dist/index.js",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "vitest run",
+        "test:watch": "vitest",
         "generate-token": "node scripts/generate-test-token.js",
         "lint": "eslint src/",
         "lint:fix": "eslint src/ --fix",
@@ -34,13 +35,16 @@
         "@types/jsonwebtoken": "^9.0.10",
         "@types/multer": "^2.1.0",
         "@types/node": "^25.5.0",
+        "@types/supertest": "^6.0.3",
         "eslint": "^10.1.0",
         "eslint-config-prettier": "^10.1.8",
         "globals": "^17.4.0",
         "prettier": "^3.8.1",
+        "supertest": "^7.2.2",
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.57.2"
+        "typescript-eslint": "^8.57.2",
+        "vitest": "^3.2.4"
     }
 }
