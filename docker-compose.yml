@@ -10,6 +10,7 @@ services:
       - BOOKSTACK_BASE_URL=${BOOKSTACK_BASE_URL}
       - BOOKSTACK_TOKEN_ID=${BOOKSTACK_TOKEN_ID}
       - BOOKSTACK_TOKEN_SECRET=${BOOKSTACK_TOKEN_SECRET}
+      - ALLOWED_ORIGIN=${BACKEND_API_ALLOWED_ORIGIN:-*}
     restart: unless-stopped
   client:
     build:
