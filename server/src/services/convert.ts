@@ -21,8 +21,8 @@ export const convertPdf = async (
     const jsonResult = await readFromCache(prefix, buffer);
     if (jsonResult) return jsonResult;
 
-    const apiKey = env.API_KEY;
-    const apiUrl = env.API_URL;
+    const apiKey = env.CONVERT_API_KEY;
+    const apiUrl = env.CONVERT_API_URL;
 
     const headers = {
         "X-Api-Key": apiKey,

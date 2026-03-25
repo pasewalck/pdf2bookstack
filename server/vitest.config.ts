@@ -7,7 +7,7 @@ export default defineConfig({
         include: ["tests/**/*.test.ts"],
         env: {
             JWT_SECRET: "test-jwt-secret",
-            API_KEY: "test-api-key",
+            CONVERT_API_KEY: "test-api-key",
             BOOKSTACK_BASE_URL: "https://bookstack.test",
             BOOKSTACK_TOKEN_ID: "test-token-id",
             BOOKSTACK_TOKEN_SECRET: "test-token-secret",
