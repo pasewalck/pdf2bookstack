@@ -33,18 +33,21 @@
         "@types/express": "^5.0.6",
         "@types/form-data": "^2.2.1",
         "@types/jsonwebtoken": "^9.0.10",
-        "@types/multer": "^2.1.0",
-        "@types/node": "^25.5.0",
-        "@types/supertest": "^6.0.3",
-        "eslint": "^10.1.0",
+        "@types/multer": "^2.3.0",
+        "@types/node": "^26.6.6",
+        "@types/supertest": "^7.2.1",
+        "eslint": "^10.14.0",
         "eslint-config-prettier": "^10.1.8",
-        "globals": "^17.4.0",
-        "prettier": "^3.8.1",
-        "supertest": "^7.2.2",
+        "globals": "^17.14.0",
+        "prettier": "^3.9.10",
+        "supertest": "^7.3.2",
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.57.2",
-        "vitest": "^3.2.4"
+        "typescript-eslint": "^8.72.1",
+        "vitest": "^5.1.0"
+    },
+    "overrides": {
+        "minimatch@>=7.0.0 <11.0.1": "11.0.5"
     }
 }
