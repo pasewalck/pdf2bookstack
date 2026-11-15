@@ -8,6 +8,8 @@
         'iat' => time(),
         'exp' => time() + (60 * 60), // Token expires in 60 minutes
         'book_id' => $book->id,
+        // Optional: import into a specific chapter.
+        'chapter_id' => isset($chapter) ? $chapter->id : null,
         'user_id' => user()->id,
         'user_name' => user()->name,
     ];

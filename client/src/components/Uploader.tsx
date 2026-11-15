@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { FileSelector } from './FileSelector';
 import { SuccessPage } from './SuccessPage';
 import { useHandleUpload } from '../hooks/useHandleUpload';
+import { useUploadOptions } from '../hooks/useUploadOptions';
 
 interface UploaderProps {
   token: string;
@@ -9,7 +10,11 @@ interface UploaderProps {
 
 export const Uploader = ({ token }: UploaderProps) => {
   const [file, setFile] = useState<File | null>(null);
-  const { handleUpload, uploadStatus, uploadOptions } = useHandleUpload(token);
+  const uploadOptions = useUploadOptions();
+  const { handleUpload, uploadStatus } = useHandleUpload(token, {
+    useMarkdown: uploadOptions.useMarkdown,
+    keepImages: uploadOptions.keepImages
+  });
 
   const onFileSelect = useCallback((selectedFile: File) => {
     setFile(selectedFile);
@@ -45,6 +50,7 @@ export const Uploader = ({ token }: UploaderProps) => {
           isUploading={uploadStatus.status === 'uploading'}
           hasError={uploadStatus.status === 'error'}
           errorMessage={uploadStatus.message}
+          options={uploadOptions}
         />
       )}
     </div>

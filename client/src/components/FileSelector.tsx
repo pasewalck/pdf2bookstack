@@ -1,6 +1,7 @@
 import { useDropzone } from 'react-dropzone';
 import { UploadCloud, FileText, AlertCircle, Loader2 } from 'lucide-react';
 import { UploadOptions } from './UploadOptions';
+import type { UploadOptionsControls } from '../hooks/useUploadOptions';
 
 interface FileSelectorProps {
   file: File | null;
@@ -10,6 +11,7 @@ interface FileSelectorProps {
   isUploading: boolean;
   hasError: boolean;
   errorMessage: string;
+  options: UploadOptionsControls;
 }
 
 export function FileSelector({
@@ -19,7 +21,8 @@ export function FileSelector({
   onClear,
   isUploading,
   hasError,
-  errorMessage
+  errorMessage,
+  options
 }: FileSelectorProps) {
   const onDrop = (acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -67,7 +70,7 @@ export function FileSelector({
         PDF data is processed by <a href="https://www.datalab.to" target="_blank" rel="noopener noreferrer" className="underline">datalab.to</a>
       </p>
 
-      <UploadOptions isDisabled={isUploading} />
+      <UploadOptions isDisabled={isUploading} options={options} />
 
       {hasError && (
         <div className="flex items-center gap-3 p-4 bg-red-50 text-red-600 rounded-lg border border-red-200">

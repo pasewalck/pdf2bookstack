@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useUploadStatus } from './useUploadStatus';
-import { useUploadOptions } from './useUploadOptions';
+import type { UploadOptionsState } from './useUploadOptions';
 
 interface UploadResponse {
   success: boolean;
@@ -9,9 +9,9 @@ interface UploadResponse {
   error?: string;
 }
 
-export function useHandleUpload(token: string) {
+export function useHandleUpload(token: string, options: UploadOptionsState) {
   const uploadStatus = useUploadStatus();
-  const uploadOptions = useUploadOptions();
+  const { useMarkdown, keepImages } = options;
 
   const handleUpload = useCallback(
     async (file: File) => {
@@ -22,10 +22,8 @@ export function useHandleUpload(token: string) {
 
       const formData = new FormData();
       formData.append('file', file);
-
-      const options = uploadOptions.getOptions();
-      formData.append('useMarkdown', String(options.useMarkdown));
-      formData.append('keepImages', String(options.keepImages));
+      formData.append('useMarkdown', String(useMarkdown));
+      formData.append('keepImages', String(keepImages));
 
       const apiUrl = import.meta.env.VITE_BACKEND_API_URL || 'http://localhost:3001';
       try {
@@ -53,8 +51,8 @@ export function useHandleUpload(token: string) {
         );
       }
     },
-    [token, uploadStatus, uploadOptions]
+    [token, useMarkdown, keepImages, uploadStatus]
   );
 
-  return { handleUpload, uploadStatus, uploadOptions };
+  return { handleUpload, uploadStatus };
 }

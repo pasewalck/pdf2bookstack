@@ -36,6 +36,8 @@ export const doUpload = async (req: AuthRequest, res: Response) => {
             return;
         }
 
+        const chapterId = req.chapterId;
+
         const fileName = file.originalname;
         const title = getPdfFilePageTitle(fileName);
         const useMarkdown = req.body.useMarkdown !== "false" && req.body.useMarkdown !== false;
@@ -46,9 +48,13 @@ export const doUpload = async (req: AuthRequest, res: Response) => {
         );
         const jsonResult = await convertPdf(file.buffer, fileName, keepImages, useMarkdown);
 
-        console.log(`Conversion complete. Creating page in Bookstack (Book ID: ${bookId})...`);
+        console.log(
+            `Conversion complete. Creating page in Bookstack (Book ID: ${bookId}, Chapter ID: ${
+                chapterId ?? "none"
+            })...`
+        );
 
-        const page = await importBook(bookId, title, jsonResult, useMarkdown);
+        const page = await importBook(bookId, title, jsonResult, useMarkdown, chapterId);
         res.status(200).json({ success: true, pageUrl: page.url, pageId: page.id });
     } catch (error: any) {
         const message = (() => {
@@ -57,7 +63,9 @@ export const doUpload = async (req: AuthRequest, res: Response) => {
             }
             return error.message || "Unexpected error";
         })();
+        const status = axios.isAxiosError(error) ? 500 : error.statusCode || 500;
+
         console.error("Upload failed:", message);
-        res.status(500).json({ error: message });
+        res.status(status).json({ error: message });
     }
 };

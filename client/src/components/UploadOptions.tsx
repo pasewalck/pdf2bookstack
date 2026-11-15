@@ -1,11 +1,12 @@
-import { useUploadOptions } from '../hooks/useUploadOptions';
+import type { UploadOptionsControls } from '../hooks/useUploadOptions';
 
 interface UploadOptionsProps {
   isDisabled: boolean;
+  options: UploadOptionsControls;
 }
 
-export function UploadOptions({ isDisabled }: UploadOptionsProps) {
-  const { useMarkdown, setUseMarkdown, keepImages, setKeepImages } = useUploadOptions();
+export function UploadOptions({ isDisabled, options }: UploadOptionsProps) {
+  const { useMarkdown, setUseMarkdown, keepImages, setKeepImages } = options;
 
   return (
     <div className={`flex flex-wrap gap-6 items-center py-2 px-4 bg-gray-50 rounded-lg ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}>

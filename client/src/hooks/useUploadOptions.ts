@@ -1,11 +1,18 @@
 import { useState } from 'react';
 
-interface UploadOptionsState {
+export interface UploadOptionsState {
   useMarkdown: boolean;
   keepImages: boolean;
 }
 
-export function useUploadOptions() {
+export interface UploadOptionsControls extends UploadOptionsState {
+  setUseMarkdown: (value: boolean) => void;
+  setKeepImages: (value: boolean) => void;
+  getOptions: () => UploadOptionsState;
+  reset: () => void;
+}
+
+export function useUploadOptions(): UploadOptionsControls {
   const [useMarkdown, setUseMarkdown] = useState<boolean>(false);
   const [keepImages, setKeepImages] = useState<boolean>(true);
 

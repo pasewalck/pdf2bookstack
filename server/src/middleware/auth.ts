@@ -8,6 +8,7 @@ if (!JWT_SECRET) throw new Error("JWT_SECRET must be defined!");
 export interface AuthRequest extends Request {
     exp?: number;
     bookId?: number;
+    chapterId?: number;
 }
 
 export const verifyBookstackToken = (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -21,7 +22,9 @@ export const verifyBookstackToken = (req: AuthRequest, res: Response, next: Next
     const token = authHeader.split(" ")[1];
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as any;
+        const chapterId = Number(decoded.chapter_id);
         req.bookId = decoded.book_id;
+        req.chapterId = Number.isInteger(chapterId) && chapterId > 0 ? chapterId : undefined;
         req.exp = decoded.exp;
 
         if (!req.bookId) {

@@ -39,12 +39,13 @@ export const createPage = async (
     bookId: number,
     title: string,
     content: string,
-    useMarkdown: boolean
+    useMarkdown: boolean,
+    chapterId?: number
 ) => {
     const { data } = await axios.post(
         `${env.BOOKSTACK_BASE_URL}/api/pages`,
         {
-            book_id: bookId,
+            ...(chapterId ? { chapter_id: chapterId } : { book_id: bookId }),
             ...getPagePayload(title, content, useMarkdown),
         },
         getRequestConfig()

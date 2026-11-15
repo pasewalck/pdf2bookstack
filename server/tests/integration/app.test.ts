@@ -1,13 +1,17 @@
 import request from "supertest";
 import jwt from "jsonwebtoken";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createPageLink } from "../../src/services/bookstack";
+import { createPageLink, getBookChapters, importBook } from "../../src/services/bookstack";
 import env from "../../src/helpers/env";
 
 vi.mock("../../src/services/bookstackApi", () => ({
     readBook: vi.fn(async (bookId: number) => ({
         id: bookId,
         slug: "demo-book",
+        content: [
+            { type: "chapter", id: 10, name: "Chapter One", slug: "chapter-one" },
+            { type: "page", id: 11, name: "Page One", slug: "page-one" },
+        ],
     })),
 }));
 
@@ -45,7 +49,11 @@ const payload = {
 
 describe("server", () => {
     const token = jwt.sign(payload, env.JWT_SECRET, { algorithm: "HS256" });
+    const chapterToken = jwt.sign({ ...payload, chapter_id: 10 }, env.JWT_SECRET, {
+        algorithm: "HS256",
+    });
     const iToken = jwt.sign(payload, "invalid" + env.JWT_SECRET, { algorithm: "HS256" });
+    const importBookMock = vi.mocked(importBook);
 
     it("returns health status", async () => {
         const response = await request(app).get("/api/health");
@@ -96,5 +104,45 @@ describe("server", () => {
             .field("keepImages", "true");
 
         expect(response.status).toBe(200);
+        expect(importBookMock).toHaveBeenCalledWith(
+            1,
+            "empty",
+            expect.anything(),
+            false,
+            undefined
+        );
+    });
+
+    it("imports into the chapter tracked in the token", async () => {
+        const fileBuffer = Buffer.from("");
+        const filename = "empty.pdf";
+        const response = await request(app)
+            .post("/api/upload")
+            .set("Authorization", `Bearer ${chapterToken}`)
+            .attach("file", fileBuffer, { filename })
+            .field("useMarkdown", "false")
+            .field("keepImages", "true");
+
+        expect(response.status).toBe(200);
+        expect(importBookMock).toHaveBeenCalledWith(1, "empty", expect.anything(), false, 10);
+    });
+});
+
+describe("bookstack helpers", () => {
+    it("extracts top-level chapters from a book", () => {
+        expect(
+            getBookChapters({
+                content: [
+                    { type: "chapter", id: 10, name: "Chapter One", slug: "chapter-one" },
+                    { type: "page", id: 11, name: "Page One", slug: "page-one" },
+                ],
+            })
+        ).toEqual([{ id: 10, name: "Chapter One", slug: "chapter-one" }]);
+    });
+
+    it("builds a page link within the book", () => {
+        expect(createPageLink({ slug: "demo-book" }, { slug: "demo-page" })).toBe(
+            `${env.BOOKSTACK_BASE_URL}/books/demo-book/page/demo-page`
+        );
     });
 });
