@@ -2,8 +2,10 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 
 export const useToken = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [isVerifying, setIsVerifying] = useState<boolean>(false);
+  const [token] = useState<string | null>(
+    () => new URLSearchParams(window.location.search).get('token')
+  );
+  const [isVerifying, setIsVerifying] = useState<boolean>(() => token !== null);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [bookUrl, setBookUrl] = useState<string | null>(null);
   const [exp, setExp] = useState<number | null>(null);
@@ -21,7 +23,6 @@ export const useToken = () => {
   }, [clearExpireTimer]);
 
   const verifyToken = useCallback(async (tokenToVerify: string) => {
-    setIsVerifying(true);
     const apiUrl = import.meta.env.VITE_BACKEND_API_URL || 'http://localhost:3001';
     try {
       const response = await axios.get(`${apiUrl}/api/verify`, {
@@ -54,14 +55,12 @@ export const useToken = () => {
   }, [clearExpireTimer]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const tokenParam = params.get('token');
-
-    if (tokenParam) {
-      setToken(tokenParam);
-      verifyToken(tokenParam);
+    if (token) {
+      // Token verification is an async external request; state is only updated after it resolves.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      verifyToken(token);
     }
-  }, [verifyToken]);
+  }, [token, verifyToken]);
 
   return { token, isValid, isVerifying, bookUrl, exp };
 };
