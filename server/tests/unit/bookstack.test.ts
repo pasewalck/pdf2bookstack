@@ -11,6 +11,7 @@ vi.mock("../../src/services/bookstackApi", () => ({
     createPage: vi.fn(async () => ({ id: 1, slug: "demo-page" })),
     createImage: vi.fn(async () => ({ url: "https://bookstack.test/image.png" })),
     updatePage: vi.fn(async () => ({})),
+    createAttachment: vi.fn(async () => ({})),
 }));
 
 const conversionResult = {
@@ -25,16 +26,19 @@ describe("importBook", () => {
     });
 
     it("creates a page in the requested chapter", async () => {
-        const result = await importBook(1, "Demo", conversionResult, false, 10);
+        const result = await importBook(1, "Demo", conversionResult, {
+            useMarkdown: false,
+            chapterId: 10,
+        });
 
         expect(bookstackApi.createPage).toHaveBeenCalledWith(1, "Demo", "<p>Hello</p>", false, 10);
         expect(result.url).toBe("https://bookstack.test/books/demo-book/page/demo-page");
     });
 
     it("rejects a chapter that is not part of the book", async () => {
-        await expect(importBook(1, "Demo", conversionResult, false, 99)).rejects.toThrow(
-            "Chapter 99 does not belong to book 1."
-        );
+        await expect(
+            importBook(1, "Demo", conversionResult, { useMarkdown: false, chapterId: 99 })
+        ).rejects.toThrow("Chapter 99 does not belong to book 1.");
 
         expect(bookstackApi.createPage).not.toHaveBeenCalled();
     });

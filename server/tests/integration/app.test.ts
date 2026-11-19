@@ -108,8 +108,12 @@ describe("server", () => {
             1,
             "empty",
             expect.anything(),
-            false,
-            undefined
+            expect.objectContaining({
+                useMarkdown: false,
+                chapterId: undefined,
+                uploadSource: true,
+                pdf: expect.anything(),
+            })
         );
     });
 
@@ -124,7 +128,17 @@ describe("server", () => {
             .field("keepImages", "true");
 
         expect(response.status).toBe(200);
-        expect(importBookMock).toHaveBeenCalledWith(1, "empty", expect.anything(), false, 10);
+        expect(importBookMock).toHaveBeenCalledWith(
+            1,
+            "empty",
+            expect.anything(),
+            expect.objectContaining({
+                useMarkdown: false,
+                chapterId: 10,
+                uploadSource: true,
+                pdf: expect.anything(),
+            })
+        );
     });
 });
 

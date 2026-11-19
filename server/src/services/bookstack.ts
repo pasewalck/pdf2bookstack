@@ -13,6 +13,13 @@ export interface Chapter {
     slug?: string;
 }
 
+export interface ImportBookOptions {
+    useMarkdown: boolean;
+    chapterId?: number;
+    uploadSource?: boolean;
+    pdf?: Express.Multer.File;
+}
+
 class ChapterNotFoundError extends Error {
     statusCode = 400;
 }
@@ -39,9 +46,9 @@ export const importBook = async (
     bookId: number,
     title: string,
     jsonResult: ConversionResult,
-    useMarkdown: boolean,
-    chapterId?: number
+    options: ImportBookOptions
 ): Promise<ImportPageResult> => {
+    const { useMarkdown, chapterId, uploadSource = false, pdf } = options;
     let content = useMarkdown ? jsonResult.markdown || "" : jsonResult.html || "";
 
     const book = await bookstackApi.readBook(bookId);
@@ -65,6 +72,19 @@ export const importBook = async (
     }
 
     await bookstackApi.updatePage(page.id, title, content, useMarkdown);
+
+    if (uploadSource && pdf) {
+        try {
+            await bookstackApi.createAttachment(
+                pdf.originalname,
+                pdf.mimetype,
+                page.id,
+                pdf.buffer
+            );
+        } catch (error) {
+            console.warn(`Failed to attach source PDF to page ${page.id}:`, error);
+        }
+    }
 
     const pageUrl = createPageLink(book, page);
 

@@ -84,3 +84,26 @@ export const createImage = async (fileName: string, pageId: number, base64String
 
     return data;
 };
+
+export const createAttachment = async (
+    fileName: string,
+    mimeType: string,
+    pageId: number,
+    buffer: Buffer
+) => {
+    const form = new FormData();
+    form.append("file", buffer, {
+        filename: fileName,
+        contentType: mimeType,
+    });
+    form.append("name", fileName);
+    form.append("uploaded_to", pageId);
+
+    const { data } = await axios.post(
+        `${env.BOOKSTACK_BASE_URL}/api/attachments`,
+        form,
+        getRequestConfig({ maxContentLength: Infinity, maxBodyLength: Infinity }, form.getHeaders())
+    );
+
+    return data;
+};

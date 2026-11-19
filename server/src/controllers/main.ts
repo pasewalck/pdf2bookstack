@@ -42,6 +42,7 @@ export const doUpload = async (req: AuthRequest, res: Response) => {
         const title = getPdfFilePageTitle(fileName);
         const useMarkdown = req.body.useMarkdown !== "false" && req.body.useMarkdown !== false;
         const keepImages = req.body.keepImages !== "false" && req.body.keepImages !== false;
+        const uploadSource = req.body.uploadSource !== "false" && req.body.uploadSource !== false;
 
         console.log(
             `Starting conversion for ${fileName} (Markdown: ${useMarkdown}, Images: ${keepImages})...`
@@ -54,7 +55,12 @@ export const doUpload = async (req: AuthRequest, res: Response) => {
             })...`
         );
 
-        const page = await importBook(bookId, title, jsonResult, useMarkdown, chapterId);
+        const page = await importBook(bookId, title, jsonResult, {
+            useMarkdown,
+            chapterId,
+            uploadSource,
+            pdf: file,
+        });
         res.status(200).json({ success: true, pageUrl: page.url, pageId: page.id });
     } catch (error: any) {
         const message = (() => {
