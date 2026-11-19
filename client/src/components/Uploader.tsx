@@ -13,7 +13,8 @@ export const Uploader = ({ token }: UploaderProps) => {
   const uploadOptions = useUploadOptions();
   const { handleUpload, uploadStatus } = useHandleUpload(token, {
     useMarkdown: uploadOptions.useMarkdown,
-    keepImages: uploadOptions.keepImages
+    keepImages: uploadOptions.keepImages,
+    uploadSource: uploadOptions.uploadSource
   });
 
   const onFileSelect = useCallback((selectedFile: File) => {

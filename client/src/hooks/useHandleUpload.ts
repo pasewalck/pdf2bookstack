@@ -11,7 +11,7 @@ interface UploadResponse {
 
 export function useHandleUpload(token: string, options: UploadOptionsState) {
   const uploadStatus = useUploadStatus();
-  const { useMarkdown, keepImages } = options;
+  const { useMarkdown, keepImages, uploadSource } = options;
 
   const handleUpload = useCallback(
     async (file: File) => {
@@ -24,6 +24,7 @@ export function useHandleUpload(token: string, options: UploadOptionsState) {
       formData.append('file', file);
       formData.append('useMarkdown', String(useMarkdown));
       formData.append('keepImages', String(keepImages));
+      formData.append('uploadSource', String(uploadSource));
 
       const apiUrl = import.meta.env.VITE_BACKEND_API_URL || 'http://localhost:3001';
       try {
@@ -51,7 +52,7 @@ export function useHandleUpload(token: string, options: UploadOptionsState) {
         );
       }
     },
-    [token, useMarkdown, keepImages, uploadStatus]
+    [token, useMarkdown, keepImages, uploadSource, uploadStatus]
   );
 
   return { handleUpload, uploadStatus };
